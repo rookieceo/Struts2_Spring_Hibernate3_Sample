@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--beans default-autowire="autodetect"-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+ 	xsi:schemaLocation="http://www.springframework.org/schema/beans
+ 						http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+						http://www.springframework.org/schema/context
+						http://www.springframework.org/schema/context/spring-context-2.5.xsd
+						http://www.springframework.org/schema/jee
+						http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+						http://www.springframework.org/schema/tx
+						http://www.springframework.org/schema/tx/spring-tx-2.5.xsd"
+     default-autowire="byName">
+    
+    <!-- add your spring beans here -->
+    <!-- DataSource 설정 -->
+    <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="java:comp/env/jdbc/oraclePool" />
+        <property name="resourceRef" value="true" />
+    </bean>
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager"
+		p:sessionFactory-ref="sessionFactory" />
+        
+      <!-- Choose the dialect that matches your "dataSource" definition -->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+        <property name="dataSource">
+            <ref bean="dataSource"/>
+        </property>
+        <property name="annotatedClasses">
+            <list>
+                <!-- 이곳에 OR(객체/DB 간) 매핑될 클래스들을 선언해줌 -->
+                <value>com.kolonbenit.sample.model.Product</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!--bean id="productAction" class="com.kolonbenit.sample.web.ProductAction">
+        <property name="productDao" ref="productDao"/>
+    </bean>
+    <bean id="productDao" class="com.kolonbenit.sample.dao.impl.ProductDaoImpl">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory"/>
+        </property>
+     </bean>
+      < 서비스 구현내용 기술 -->
+    <!-- bean id="productService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager">
+            <ref bean="myTransactionManager"/>
+        </property>
+        <property name="target">
+            <ref local="productDao"/>
+        </property>
+        <property name="transactionAttributes">
+            <props>
+                <prop key="get*">PROPAGATION_REQUIRED,readOnly,-org.springframework.dao.DataAccessException</prop>
+                <prop key="save*">PROPAGATION_REQUIRED,-org.springframework.dao.DataAccessException</prop>
+                <prop key="delete*">PROPAGATION_REQUIRED,-org.springframework.dao.DataAccessException</prop>
+                <prop key="update*">PROPAGATION_REQUIRED,-org.springframework.dao.DataAccessException</prop>
+            </props>
+        </property>
+    </bean-->
+    <context:annotation-config />
+	<tx:annotation-driven />
+    <context:component-scan base-package="com.kolonbenit.sample.*" />
+	<!--context:component-scan base-package="com.kolonbenit.sample.dao" /-->
+</beans>

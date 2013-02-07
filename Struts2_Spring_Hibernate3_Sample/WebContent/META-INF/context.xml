@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Context antiJARLocking="true" path="/WebOut"/-->
+<!--   //com.microsoft.jdbc.sqlserver.SQLServerDriver" -->
+<Context antiJARLocking="true" cachingAllowed="false" path="/WebOut" reloadable="true">
+  <ResourceLink global="jdbc/oraclePool" name="jdbc/oraclePool" type="javax.sql.DataSource"/>
+</Context>

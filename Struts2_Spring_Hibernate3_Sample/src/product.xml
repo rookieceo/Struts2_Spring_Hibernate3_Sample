@@ -1,0 +1,17 @@
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<!-- Author: 장인기 -->
+ 
+<struts>
+    <!-- Add your configuration elements here -->
+    <package name="product" namespace="/product" extends="struts-default">
+        <action name="productList" method="productList" class="com.kolonbenit.sample.web.ProductAction">
+            <result>/product/productList.jsp</result>
+        </action>
+        <action name="saveProduct" method="saveProduct" class="com.kolonbenit.sample.web.ProductAction">
+            <result>/product/HelloWorld.jsp</result>
+        </action>
+    </package>
+</struts>
